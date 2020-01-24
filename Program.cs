@@ -1,4 +1,5 @@
-﻿using CommandLine;
+﻿using Byter.Enums;
+using CommandLine;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -49,6 +50,12 @@ namespace Byter
                                buf = data.ToArray();
                            }
                        }
+
+                       int pad = 10;
+                       int length = buf.Length;
+                       BOMs bom = BOMDetector.DetectBOM(buf);
+                       Console.WriteLine($"{nameof(length).PadRight(pad)} : {length}");
+                       Console.WriteLine($"{nameof(bom).PadRight(pad)} : {bom}");
 
                        int baseBit = int.MinValue;
                        Func<string, string> converter = null;
