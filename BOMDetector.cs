@@ -44,6 +44,9 @@ namespace Byter
         
         public static byte[] GB_18030_BYTES => new byte[] { 0x84, 0x31, 0x95, 0x33, };
 
+        /// <summary>
+        /// The key is BOM type and the value is BOM bytes 
+        /// </summary>
         private static Dictionary<BOMs, byte[]> GetBOMBytes()
         {
             Dictionary<BOMs, byte[]> rs = new Dictionary<BOMs, byte[]>();
@@ -65,6 +68,7 @@ namespace Byter
 
             return rs;
     }
+
     /// <summary>
     /// Detect BOM from byte sequnce
     /// </summary>

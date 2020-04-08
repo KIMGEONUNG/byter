@@ -25,10 +25,15 @@ namespace Byter
 
             [Option('b',"binary", Required = false, HelpText = "binary representation",SetName = nameof(Representations.Binary))]
             public bool Binary { get; set; }
+
             [Option('d', "decimal", Required = false, HelpText = "decimal representation", SetName = nameof(Representations.Decimal))]
             public bool Decimal { get; set; }
+
             [Option('x', "hexadecimal", Required = false, HelpText = "hexadecimal representation", SetName = nameof(Representations.Hexadecimal))]
             public bool Hexadecimal { get; set; }
+
+            [Option('s', "summery", Required = false, HelpText = "print summary")]
+            public bool Summary { get; set; }
         }
 
         static void Main(string[] args)
@@ -51,11 +56,15 @@ namespace Byter
                            }
                        }
 
-                       int pad = 10;
-                       int length = buf.Length;
-                       BOMs bom = BOMDetector.DetectBOM(buf);
-                       Console.WriteLine($"{nameof(length).PadRight(pad)} : {length}");
-                       Console.WriteLine($"{nameof(bom).PadRight(pad)} : {bom}");
+
+                       if (o.Summary)
+                       {
+                           int pad = 10;
+                           int length = buf.Length;
+                           BOMs bom = BOMDetector.DetectBOM(buf);
+                           Console.WriteLine($"{nameof(length).PadRight(pad)} : {length}");
+                           Console.WriteLine($"{nameof(bom).PadRight(pad)} : {bom}");
+                       }
 
                        int baseBit = int.MinValue;
                        Func<string, string> converter = null;
