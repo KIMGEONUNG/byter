@@ -16,6 +16,8 @@ namespace Byter
             Binary,
             Decimal,
             Hexadecimal,
+            Ascii,
+            UTF8,
         }
 
         public class Options
@@ -31,6 +33,12 @@ namespace Byter
 
             [Option('x', "hexadecimal", Required = false, HelpText = "hexadecimal representation", SetName = nameof(Representations.Hexadecimal))]
             public bool Hexadecimal { get; set; }
+
+            [Option("ascii", Required = false, HelpText = "ascii representation", SetName = nameof(Representations.Ascii))]
+            public bool Ascii { get; set; }
+
+            [Option("utf8", Required = false, HelpText = "utf8 representation", SetName = nameof(Representations.UTF8))]
+            public bool UTF8 { get; set; }
 
             [Option('s', "summery", Required = false, HelpText = "print summary")]
             public bool Summary { get; set; }
@@ -56,7 +64,6 @@ namespace Byter
                            }
                        }
 
-
                        if (o.Summary)
                        {
                            int pad = 10;
@@ -73,15 +80,27 @@ namespace Byter
                            baseBit = 2;
                            converter = (s) => (s.PadLeft(8, '0'));
                        }
-                       else if(o.Decimal)
+                       else if (o.Decimal)
                        {
                            baseBit = 10;
                            converter = (s) => (s.PadLeft(3, '0'));
                        }
-                       else if(o.Hexadecimal)
+                       else if (o.Hexadecimal)
                        {
                            baseBit = 16;
                            converter = (s) => ("0x" + s.PadLeft(2, '0'));
+                       }
+                       else if (o.Ascii)
+                       {
+                           var contents = Encoding.ASCII.GetString(buf);
+                           Console.WriteLine(contents);
+                           return;  
+                       }
+                       else if (o.UTF8)
+                       {
+                           var contents = Encoding.UTF8.GetString(buf);
+                           Console.WriteLine(contents);
+                           return;  
                        }
                        else
                        {
