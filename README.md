@@ -1,6 +1,6 @@
 # Byter
 
-- inspect file byte 
+- Inspect file byte 
 
 ## Objective
 
@@ -14,3 +14,10 @@
 - Print file bytes using binary notation.
 - Print file bytes using decimal notation.
 - Print file bytes using hexadecimal notation.
+
+## Usage
+
+- Type at cmd or bash
+```
+byter --help
+```
