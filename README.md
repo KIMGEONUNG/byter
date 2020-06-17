@@ -6,6 +6,11 @@
 
 - Print byte information from file, and check the BOM
 
+## Environment & Dependency 
+
+- **Windows10**
+- **.NETCore3.1**
+
 ## Features
 
 - Check whether the file has BOM or not.
