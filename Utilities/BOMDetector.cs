@@ -6,42 +6,42 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 
-namespace Byter
+namespace byter.Utilities
 {
     /// <summary>
     /// Inspect about Byte order mark
     /// </summary>
     public class BOMDetector
     {
-        
+
         public static byte[] UTF_8 => new byte[] { 0xEF, 0xBB, 0xBF };
-        
+
         public static byte[] UTF_16_BE_BYTES => new byte[] { 0xFE, 0xFF };
-        
+
         public static byte[] UTF_16_LE_BYTES => new byte[] { 0xFF, 0xFE };
-        
+
         public static byte[] UTF_32_BE_BYTES => new byte[] { 0x00, 0x00, 0xFE, 0xFF };
-        
+
         public static byte[] UTF_32_LE_BYTES => new byte[] { 0xFF, 0xFE, 0x00, 0x00, };
-        
+
         public static byte[] UTF_7_BYTES_1 => new byte[] { 0x2B, 0x2F, 0x76, 0x38, };
-        
+
         public static byte[] UTF_7_BYTES_2 => new byte[] { 0x2B, 0x2F, 0x76, 0x39, };
-        
+
         public static byte[] UTF_7_BYTES_3 => new byte[] { 0x2B, 0x2F, 0x76, 0x2B, };
-        
+
         public static byte[] UTF_7_BYTES_4 => new byte[] { 0x2B, 0x2F, 0x76, 0x2F, };
-        
+
         public static byte[] UTF_7_BYTES_5 => new byte[] { 0x2B, 0x2F, 0x76, 0x38, 0x2D, };
-        
+
         public static byte[] UTF_1_BYTES => new byte[] { 0xF7, 0x64, 0x4C, };
-        
+
         public static byte[] UTF_EBCDIC_BYTES => new byte[] { 0xDD, 0x73, 0x66, 0x73, };
-        
+
         public static byte[] SCSU_BYTES => new byte[] { 0x0E, 0xFE, 0xFF, };
-        
+
         public static byte[] BOCU_1_BYTES => new byte[] { 0xFB, 0xEE, 0x28, };
-        
+
         public static byte[] GB_18030_BYTES => new byte[] { 0x84, 0x31, 0x95, 0x33, };
 
         /// <summary>
@@ -67,14 +67,14 @@ namespace Byter
             rs[BOMs.GB_18030] = GB_18030_BYTES;
 
             return rs;
-    }
+        }
 
-    /// <summary>
-    /// Detect BOM from byte sequnce
-    /// </summary>
-    /// <param name="bytes">target inspected bytes</param>
-    /// <returns>type of BOM</returns>
-    public static BOMs DetectBOM(IEnumerable<byte> bytes)
+        /// <summary>
+        /// Detect BOM from byte sequnce
+        /// </summary>
+        /// <param name="bytes">target inspected bytes</param>
+        /// <returns>type of BOM</returns>
+        public static BOMs DetectBOM(IEnumerable<byte> bytes)
         {
             Dictionary<BOMs, byte[]> bomDic = GetBOMBytes();
 
@@ -93,7 +93,7 @@ namespace Byter
             return BOMs.None;
         }
 
-        private static bool IsBOMMatch(IEnumerable<byte> bom , IEnumerable<byte> bytes)
+        private static bool IsBOMMatch(IEnumerable<byte> bom, IEnumerable<byte> bytes)
         {
             int bomCount = bom.Count();
             int byteCount = bytes.Count();
