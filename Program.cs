@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using byter.Utilities;
+using byter.Enums;
 
 namespace Byter
 {
@@ -19,6 +21,8 @@ namespace Byter
             Hexadecimal,
             Ascii,
             UTF8,
+            INTEGER,
+            DOUBLE,
         }
 
         public class Options
@@ -43,6 +47,15 @@ namespace Byter
 
             [Option("utf8", Required = false, HelpText = "utf8 representation", SetName = nameof(Representations.UTF8))]
             public bool UTF8 { get; set; }
+
+            [Option("int", Required = false, HelpText = "interger data representation", SetName = nameof(Representations.INTEGER))]
+            public bool INT { get; set; }
+
+            [Option("double", Required = false, HelpText = "double data representation", SetName = nameof(Representations.DOUBLE))]
+            public bool DOUBLE { get; set; }
+
+            [Option("endian", Required = false, HelpText = "Only for --int or --double, the target is \"big\" or \"little\", and the default is \"big\"", Default ="big")]
+            public string endian  { get; set; }
 
             [Option('s', "summery", Required = false, HelpText = "print summary")]
             public bool Summary { get; set; }
@@ -127,15 +140,76 @@ namespace Byter
                        }
                        else if (o.Ascii)
                        {
-                           var contents = Encoding.ASCII.GetString(buf);
+                           string contents = Encoding.ASCII.GetString(buf);
                            Console.WriteLine(contents);
-                           return;  
+                           return;
                        }
                        else if (o.UTF8)
                        {
-                           var contents = Encoding.UTF8.GetString(buf);
+                           string contents = Encoding.UTF8.GetString(buf);
                            Console.WriteLine(contents);
-                           return;  
+                           return;
+                       }
+                       else if (o.INT)
+                       {
+                           if (buf.Length % 4 != 0)
+                           {
+                               Console.WriteLine(" if you want to use integer data representation, the length of bytes must be multiples of 4.");
+                               return;
+                           }
+
+                           int[] vals = null;
+                           if (o.endian == "big")
+                           {
+                                vals = ByteToNumber.ToInt(buf, Endian.Big);
+                           }
+                           else if (o.endian == "little")
+                           {
+                                vals = ByteToNumber.ToInt(buf, Endian.Little);
+                           }
+                           else
+                           {
+                               Console.WriteLine("endian option must be \"big\" or \"little\"");
+                               return;
+                           }
+
+                           foreach (var val in vals)
+                           {
+                               Console.Write(val);
+                               Console.Write(" ");
+                           }
+
+                           return;
+                       }
+                       else if (o.DOUBLE)
+                       {
+                           if (buf.Length % 8 != 0)
+                           {
+                               Console.WriteLine(" if you want to use integer data representation, the length of bytes must be multiples of 8.");
+                               return;
+                           }
+
+                           double[] vals = null;
+                           if (o.endian == "big")
+                           {
+                                vals = ByteToNumber.ToDouble(buf, Endian.Big);
+                           }
+                           else if (o.endian == "little")
+                           {
+                                vals = ByteToNumber.ToDouble(buf, Endian.Little);
+                           }
+                           else
+                           {
+                               Console.WriteLine("endian option must be \"big\" or \"little\"");
+                               return;
+                           }
+
+                           foreach (var val in vals)
+                           {
+                               Console.Write(val);
+                               Console.Write(" ");
+                           }
+                           return;
                        }
                        else
                        {
