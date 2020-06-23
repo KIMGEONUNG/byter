@@ -8,7 +8,6 @@
 
 ## Environment & Dependency 
 
-- **Windows10**
 - **.NETCore3.1**
 
 ## Features
@@ -21,6 +20,15 @@
 - Print file bytes using hexadecimal notation.
 
 ## Usage
+
+
+###Ubuntu
+
+```bash
+git clone https://github.com/KIMGEONUNG/byter
+cd byter
+dotnet build
+```
 
 - Type at cmd or bash
 ```
