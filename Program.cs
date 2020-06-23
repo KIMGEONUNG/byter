@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace Byter
 {
@@ -24,6 +25,9 @@ namespace Byter
         {
             [Option('i', "input", Required = true, HelpText = "input file path")]
             public string InputPath { get; set; }
+
+            [Option('r', "range", Required = false, Default =null, HelpText = "Set the inspection byte range. For example, if you want to inspect from 5 to 8, the argument is \"5-8\". Note that the start number is zero")]
+            public string Range { get; set; }
 
             [Option('b',"binary", Required = false, HelpText = "binary representation",SetName = nameof(Representations.Binary))]
             public bool Binary { get; set; }
@@ -52,6 +56,7 @@ namespace Byter
                        if(!File.Exists(o.InputPath))
                        {
                            Console.WriteLine("No such file");
+                           return;
                        }
 
                        byte[] buf;
@@ -61,6 +66,36 @@ namespace Byter
                            {
                                file.CopyTo(data);
                                buf = data.ToArray();
+
+                               if (o.Range != null)
+                               {
+                                   string rangeStr = o.Range;
+                                   Regex regex = new Regex(@"^(\d+)-(\d+)");
+                                   if (!regex.IsMatch(rangeStr))
+                                   {
+                                       Console.WriteLine("Invalid range text format. Check the \"help\" text.");
+                                       return;
+                                   }
+                                   Match match = regex.Match(rangeStr);
+                                   var groups = match.Groups;
+
+                                   if (groups.Count != 3)
+                                   {
+                                       throw new InvalidOperationException($"Regex math count is not 3. but {groups.Count}");
+                                   }
+
+                                   int start = Convert.ToInt32(groups[1].Value);
+                                   int end = Convert.ToInt32(groups[2].Value);
+
+                                   if (end < start)
+                                   {
+                                       Console.WriteLine("The end range value must be bigger than the start range value");
+                                       return;
+                                   }
+
+                                   buf = buf.ToList().GetRange(start, end - start + 1).ToArray();
+
+                               }
                            }
                        }
 
