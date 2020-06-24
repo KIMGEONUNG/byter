@@ -177,8 +177,8 @@ namespace Byter
                            {
                                Console.Write(val);
                                Console.Write(" ");
-                               Console.WriteLine();
                            }
+                           Console.WriteLine();
 
                            return;
                        }
@@ -209,8 +209,8 @@ namespace Byter
                            {
                                Console.Write(val);
                                Console.Write(" ");
-                               Console.WriteLine();
                            }
+                           Console.WriteLine();
                            return;
                        }
                        else
